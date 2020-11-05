@@ -1,11 +1,21 @@
 package org.example.matrix;
 
+import lombok.Getter;
 import org.example.matrix.exception.NumberOfColumnsEqual;
 
 import java.util.Arrays;
 
 public class Matrix {
-    double[][] arrayData;
+    @Getter
+    private final double[][] arrayData;
+
+    public Matrix(int capacity) {
+        arrayData = new double[capacity][capacity];
+    }
+
+    public Matrix(int rowCapacity, int columnCapacity) {
+        arrayData = new double[rowCapacity][columnCapacity];
+    }
 
     public Matrix(double[][] arrayData) {
         if (numberOfColumnsEqual(arrayData)) {
@@ -22,6 +32,14 @@ public class Matrix {
 
     public int columnCount() {
         return arrayData[0].length;
+    }
+
+    public double get(int rowIndex, int columnIndex) {
+        return arrayData[rowIndex][columnIndex];
+    }
+
+    public void set(int rowIndex, int columnIndex, double number) {
+        arrayData[rowIndex][columnIndex] = number;
     }
 
     private boolean numberOfColumnsEqual(double[][] array) {
