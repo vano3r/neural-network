@@ -3,8 +3,6 @@ package org.example.matrix;
 import lombok.Getter;
 import org.example.matrix.exception.NumberOfColumnsEqual;
 
-import java.util.Arrays;
-
 public class Matrix {
     @Getter
     private final double[][] arrayData;
@@ -24,6 +22,11 @@ public class Matrix {
             throw new NumberOfColumnsEqual("Количество столбцов должно быть равное");
         }
 
+    }
+
+    public Matrix(double[] arrayData) {
+        this.arrayData = new double[1][arrayData.length];
+        this.arrayData[0] = arrayData;
     }
 
     public int rowCount() {
@@ -51,6 +54,14 @@ public class Matrix {
         }
 
         return true;
+    }
+
+    public void add(Matrix matrix) {
+        for (int i = 0; i < matrix.rowCount(); i++) {
+            for (int j = 0; j < matrix.columnCount(); j++) {
+                arrayData[i][j] += matrix.get(i, j);
+            }
+        }
     }
 
     @Override
