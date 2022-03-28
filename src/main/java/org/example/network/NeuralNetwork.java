@@ -1,5 +1,6 @@
 package org.example.network;
 
+import lombok.Getter;
 import org.example.matrix.Matrix;
 import org.example.matrix.MatrixUtil;
 import org.example.network.util.ActivationFunction;
@@ -11,6 +12,7 @@ public class NeuralNetwork {
     private final int inputNodes;
     private final int hiddenNodes;
     private final int outputNodes;
+    @Getter
     private final double learningRate;
 
     private Matrix weightHiddenInput;
@@ -22,6 +24,7 @@ public class NeuralNetwork {
      * @param outputNodes
      * @param learningRate
      */
+
     public NeuralNetwork(int inputNodes, int hiddenNodes, int outputNodes, double learningRate) {
         this.inputNodes = inputNodes;
         this.hiddenNodes = hiddenNodes;
@@ -50,7 +53,7 @@ public class NeuralNetwork {
      * @param targetMatrix транспонированная матрица
      */
     public void train(Matrix inputMatrix, Matrix targetMatrix) {
-        // Расчитать исходящие скигналы для выходного слоя
+        // Расчитать исходящие сигналы для выходного слоя
         Matrix hiddenOutputs = activation(MatrixUtil.mul(weightHiddenInput, inputMatrix));
         Matrix finalOutputs = activation(MatrixUtil.mul(weightHiddenOutput, hiddenOutputs));
 

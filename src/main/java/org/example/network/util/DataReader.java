@@ -18,7 +18,7 @@ public class DataReader {
         this.path = path;
     }
 
-    public List<DataForNeuralNetwork> reader() {
+    public List<DataForNeuralNetwork> read() {
 
         try (CSVReader reader = new CSVReader(
                 new FileReader(path))) {

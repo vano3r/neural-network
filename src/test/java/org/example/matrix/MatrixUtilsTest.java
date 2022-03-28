@@ -5,6 +5,9 @@ import org.junit.Assert;
 import org.junit.Test;
 
 public class MatrixUtilsTest {
+    private final Matrix A_1000 = MatrixUtil.random(-0.5, 0.5, 1000, 1000);
+    private final Matrix B_1000 = MatrixUtil.random(-0.5, 0.5, 1000, 1000);
+
     @Test
     public void checkSum() {
         Matrix a = new Matrix(new double[][]{
@@ -168,8 +171,9 @@ public class MatrixUtilsTest {
                 {14, 15},
         });
 
-        MatrixUtil.sum(a,b);
+        MatrixUtil.sum(a, b);
     }
+
     @Test(expected = MatrixUtilException.class)
     public void checkSubMatrixUtilException() throws MatrixUtilException {
         Matrix a = new Matrix(new double[][]{
@@ -183,7 +187,7 @@ public class MatrixUtilsTest {
                 {14, 15},
         });
 
-        MatrixUtil.sub(a,b);
+        MatrixUtil.sub(a, b);
     }
 
     @Test(expected = MatrixUtilException.class)
@@ -198,6 +202,29 @@ public class MatrixUtilsTest {
                 {12, 13, 3}
         });
 
-        MatrixUtil.mul(a,b);
+        MatrixUtil.mul(a, b);
+    }
+
+    @Test(timeout = 1000)
+    public void checkMulTime() {
+        MatrixUtil.mul(A_1000, B_1000);
+    }
+
+    @Test(timeout = 50)
+    public void checkSumTime() {
+        MatrixUtil.sum(A_1000, B_1000);
+    }
+
+    @Test(timeout = 50)
+    public void checkSubTime() {
+        MatrixUtil.sub(A_1000, B_1000);
+    }
+    @Test(timeout = 50)
+    public void checkScalarTime() {
+        MatrixUtil.scalar(A_1000, B_1000);
+    }
+    @Test(timeout = 20)
+    public void checkTransposeTime() {
+        MatrixUtil.transpose(A_1000);
     }
 }

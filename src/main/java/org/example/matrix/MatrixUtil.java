@@ -29,22 +29,30 @@ public class MatrixUtil {
     }
 
     public Matrix mul(@NonNull Matrix firstMatrix, @NonNull Matrix secondMatrix) {
-        Matrix c;
-        if (firstMatrix.columnCount() == secondMatrix.rowCount()) {
-            c = new Matrix(firstMatrix.rowCount(), secondMatrix.columnCount());
-
-            for (int i = 0; i < firstMatrix.rowCount(); i++) {
-                for (int j = 0; j < secondMatrix.columnCount(); j++) {
-                    for (int k = 0; k < secondMatrix.rowCount(); k++) {
-                        c.set(i, j, (c.get(i, j) + firstMatrix.get(i, k) * secondMatrix.get(k, j)));
-                    }
-                }
-            }
-        } else
+        if (firstMatrix.columnCount() != secondMatrix.rowCount()) {
             throw new MatrixUtilException(
                     "Количество столбцов первой матрицы должно равняться количеству строк второй");
+        } else {
+            Matrix c = new Matrix(firstMatrix.rowCount(), secondMatrix.columnCount());
 
-        return c;
+            double[] thatColumn = new double[secondMatrix.rowCount()];
+            for (int j = 0; j < secondMatrix.columnCount(); j++) {
+                for (int k = 0; k < firstMatrix.columnCount(); k++) {
+                    thatColumn[k] = secondMatrix.get(k, j);
+                }
+
+                for (int i = 0; i < firstMatrix.rowCount(); i++) {
+                    double[] thisRow = firstMatrix.get(i);
+                    double sum = 0;
+                    for (int k = 0; k < firstMatrix.columnCount(); k++) {
+                        sum += thisRow[k] * thatColumn[k];
+                    }
+                    c.set(i, j, sum);
+                }
+            }
+
+            return c;
+        }
     }
 
     public Matrix mul(double multiplier, Matrix matrix) {
@@ -83,7 +91,6 @@ public class MatrixUtil {
         return c;
     }
 
-    //TODO реализовать рандомную функцию, для заполнения весов (Определить границы)
     public Matrix random(double start, double end, int rowCapacity, int columnCapacity) {
         Matrix result = new Matrix(rowCapacity, columnCapacity);
 

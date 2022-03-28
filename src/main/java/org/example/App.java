@@ -6,9 +6,7 @@ import org.example.network.NeuralNetwork;
 import org.example.network.util.DataForNeuralNetwork;
 import org.example.network.util.DataReader;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class App {
@@ -23,13 +21,17 @@ public class App {
         // Создаем нейронную сеть
         NeuralNetwork n = new NeuralNetwork(inputNodes, hiddenNodes, outputNodes, learningRate);
 
-        long startTime = System.currentTimeMillis();
+        double startTime = System.currentTimeMillis();
+        System.out.println("Начало чтения файла");
         DataReader reader = new DataReader("src/main/resources/mnist_train.csv");
-        List<DataForNeuralNetwork> inputData = reader.reader();
+        List<DataForNeuralNetwork> inputData = reader.read();
+        System.out.println("Завершение чтения файла, потребовалось времени " + (System.currentTimeMillis() - startTime) / 1000 + " сек на " + inputData.size() + " строк");
+
 
         int i = 0;
         while (i < epochs) {
-            System.out.println("Поехали !");
+            System.out.println("Старт " + ++i + " эпохи");
+            double tempTime = System.currentTimeMillis();
             // Загружаем данные для обучения
             Matrix targetMatrix;
             // Начинаем обучение нейронки
@@ -40,15 +42,17 @@ public class App {
 
                 n.train(inputMatrix, targetMatrix);
             }
-            System.out.println("Эпоха " + i++  + " Прошло времени: " + (System.currentTimeMillis() - startTime));
+
+            System.out.println("Эпоха " + i + " завершилась за: " + (System.currentTimeMillis() - tempTime) / 1000 + " сек");
         }
 
-        System.out.println("\n Тренировка завершина за: " + (System.currentTimeMillis() - startTime));
+        double trainTime = (System.currentTimeMillis() - startTime) / 1000;
+        System.out.println("\n Тренировка завершина за: " + trainTime + " сек");
 
 
         // Загружаем тестовые данные
         DataReader reader2 = new DataReader("src/main/resources/mnist_test.csv");
-        List<DataForNeuralNetwork> inputData2 = reader2.reader();
+        List<DataForNeuralNetwork> inputData2 = reader2.read();
 
         List<Integer> result = new ArrayList<>();
         for (DataForNeuralNetwork data : inputData2) {
